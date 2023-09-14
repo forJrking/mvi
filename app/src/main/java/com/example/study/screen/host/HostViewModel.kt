@@ -18,7 +18,8 @@ class HostViewModel @Inject constructor(
         when (action) {
             HostAction.LoadData -> {
                 emitState {
-                    HostState.Data(repo.fetchData())
+                    val contacts = repo.fetchData()
+                    HostState.Data(contacts)
                 }
             }
             is HostAction.NavCompose -> {

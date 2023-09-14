@@ -7,5 +7,5 @@ interface DataRepository {
 
     suspend fun fetchData(): List<Contact>
 
-    suspend fun fetchWeChat(): String
+    suspend fun fetchWeChat(contactId: String): Result<String>
 }

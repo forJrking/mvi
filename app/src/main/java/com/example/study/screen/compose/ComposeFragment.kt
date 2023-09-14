@@ -41,6 +41,8 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -57,8 +59,10 @@ import androidx.navigation.fragment.navArgs
 import com.arch.mvi.view.StateEffectScaffold
 import com.example.study.R
 import com.example.study.ext.findActivity
+import com.example.study.repo.Contact
 import com.example.study.screen.compose.ComposeState.Companion.MAX_COUNT
 import com.example.study.screen.compose.destinations.MVIScreenDestination
+import com.example.study.test.TestTag
 import com.example.study.ui.theme.MVIHiltTheme
 import com.example.study.utils.ImageLoader.decodeBitmap
 import com.ramcosta.composedestinations.DestinationsNavHost
@@ -117,14 +121,24 @@ fun FirstScreen(navigator: DestinationsNavigator) {
             )
         }
     ) {
-        FriendDetails(it) {
-            navigator.navigate(MVIScreenDestination)
+        val viewModel = hiltViewModel<ShareViewModel>(
+            LocalContext.current.findActivity() as ViewModelStoreOwner
+        )
+        val contactState by viewModel.shareContact.observeAsState()
+        FriendDetails(it, contactState) {
+            contactState?.let {
+                navigator.navigate(MVIScreenDestination(it))
+            }
         }
     }
 }
 
 @Composable
-private fun FriendDetails(paddingValues: PaddingValues, onClick: () -> Unit) {
+private fun FriendDetails(
+    paddingValues: PaddingValues,
+    contactState: Contact?,
+    onClick: () -> Unit
+) {
     Column(
         modifier = Modifier
             .padding(paddingValues)
@@ -132,10 +146,6 @@ private fun FriendDetails(paddingValues: PaddingValues, onClick: () -> Unit) {
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val viewModel = hiltViewModel<ShareViewModel>(
-            LocalContext.current.findActivity() as ViewModelStoreOwner
-        )
-        val contactState by viewModel.shareContact.observeAsState()
         CustomerItem(
             contactState?.content ?: "NowInGo",
             contactState?.details ?: "Now in android of jetpack"
@@ -173,7 +183,8 @@ private fun FriendDetails(paddingValues: PaddingValues, onClick: () -> Unit) {
         androidx.compose.material3.OutlinedButton(
             modifier = Modifier
                 .padding(horizontal = 16.dp, vertical = 20.dp)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .semantics { testTag = TestTag.CIRCLEOFFRIENDS },
             onClick = onClick
         ) {
             Text(text = "Circle of friends")
@@ -259,9 +270,12 @@ private fun CustomerItem(name: String, descriptor: String) {
 @Destination
 @Composable
 fun MVIScreen(
-    navigator: DestinationsNavigator
+    navigator: DestinationsNavigator,
+    contact: Contact
 ) {
-    val composeViewModel = hiltViewModel<ComposeViewModel>()
+    val composeViewModel = hiltViewModel<ComposeViewModel>().apply {
+        ComposeAction.LoadData(contact.id).let(::sendAction)
+    }
     val scaffoldState = rememberScaffoldState()
     val launcher = rememberLauncherForActivityResult(
         ActivityResultContracts.PickMultipleVisualMedia(maxItems = MAX_COUNT)

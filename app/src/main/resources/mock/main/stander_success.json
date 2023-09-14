@@ -1,0 +1,11 @@
+{
+  "responseInfo": {
+    "requestCorrelationId": "43ad93b0-60cb-11ed-bac2-005056a6a7c7",
+    "reasons": [
+      {
+        "code": "000",
+        "type": "SUCCESS"
+      }
+    ]
+  }
+}

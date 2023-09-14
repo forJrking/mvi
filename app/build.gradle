@@ -8,8 +8,12 @@ plugins {
     id 'com.google.devtools.ksp'
 }
 
+apply from: "$rootDir/gradle/script/jacoco.gradle"
+apply from: "$rootDir/gradle/script/screenshot.gradle"
+
 android {
     compileSdkVersion 34
+    namespace 'com.example.study'
 
     defaultConfig {
         applicationId "com.example.study"
@@ -17,7 +21,8 @@ android {
         targetSdkVersion 34
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "com.example.study.CucumberTestRunner"
+        testInstrumentationRunner "com.karumi.shot.ShotTestRunner"
+        testInstrumentationRunnerArguments clearPackageData: 'true'
         vectorDrawables {
             useSupportLibrary true
         }
@@ -40,8 +45,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     buildFeatures {
@@ -51,6 +56,9 @@ android {
     testOptions {
         unitTests {
             includeAndroidResources = true
+            all {
+                useJUnitPlatform()
+            }
         }
     }
 
@@ -59,14 +67,13 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
     packagingOptions {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
-    namespace 'com.example.study'
     applicationVariants.all { variant ->
         variant.addJavaSourceFoldersToModel(
                 new File(buildDir, "generated/ksp/${variant.name}/kotlin")
@@ -141,8 +148,6 @@ dependencies {
     kapt 'com.google.dagger:hilt-compiler:2.47'
     androidTestImplementation 'com.google.dagger:hilt-android-testing:2.47'
     kaptAndroidTest 'com.google.dagger:hilt-compiler:2.47'
-    testImplementation 'com.google.dagger:hilt-android-testing:2.47'
-    kaptTest 'com.google.dagger:hilt-compiler:2.47'
     //endregion dagger hilt
 
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
@@ -155,9 +160,26 @@ dependencies {
     // Testing Navigation
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
 
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test:rules:1.4.0'
-    androidTestImplementation 'androidx.test:runner:1.4.0'
-    androidTestUtil 'androidx.test:orchestrator:1.4.0'
+    // Tests
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.8.2"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.8.2"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:5.8.2"
+    testImplementation "org.mockito.kotlin:mockito-kotlin:5.1.0"
+    testImplementation "androidx.arch.core:core-testing:2.2.0"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3"
+    testImplementation "androidx.arch.core:core-testing:2.2.0"
+    testImplementation "androidx.core:core-testing:1.12.0"
+    testImplementation 'app.cash.turbine:turbine:1.0.0'
+
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test:rules:1.5.0'
+    androidTestImplementation 'androidx.test:runner:1.5.2'
+    androidTestUtil 'androidx.test:orchestrator:1.4.2'
+    androidTestImplementation "com.squareup.okhttp3:mockwebserver:4.11.0"
+    androidTestImplementation 'com.kaspersky.android-components:kaspresso:1.5.3'
+    // Allure support
+//    androidTestImplementation "com.kaspersky.android-components:kaspresso-allure-support:1.5.3"
+    // Jetpack Compose support
+    androidTestImplementation "com.kaspersky.android-components:kaspresso-compose-support:1.5.3"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3"
 }

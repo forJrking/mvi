@@ -1,0 +1,5 @@
+apply plugin: 'shot'
+
+shot {
+    tolerance =  5 // 10% tolerance
+}

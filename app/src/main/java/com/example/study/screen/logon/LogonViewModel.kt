@@ -2,6 +2,7 @@ package com.example.study.screen.logon
 
 import androidx.lifecycle.viewModelScope
 import com.arch.mvi.viewmodel.BaseViewModel
+import com.example.study.di.LogonRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn

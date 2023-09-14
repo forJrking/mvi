@@ -1,0 +1,61 @@
+apply plugin: "jacoco"
+
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+    jacoco.excludes = ['jdk.internal.*']
+}
+
+jacoco {
+    toolVersion = '0.8.8'
+}
+
+/**
+ * The correct path of the report is $rootProjectDir/app/build/reports/jacoco/jacocoTestReport/html/index.html
+ * to run this task use: ./gradlew clean jacocoTestReport
+ */
+def mainSrc = "${project.projectDir}/src/main/java"
+project.ext.coverageExclusions = [
+        '**/*JavascriptBridge.class',
+        '**/R.class',
+        '**/R$*.class',
+        '**/Manifest*.*',
+        '**/BuildConfig.*',
+        '**/*Lambda*.*',
+        '**/*_MembersInjector.class', //Dagger2 generated code
+        '*/*_MembersInjector*.*', //Dagger2 generated code
+        '**/*_*Factory*.*', //Dagger2 generated code
+        '*/*Component*.*', //Dagger2 generated code
+        '**/*Module*.*', //Dagger2 generated code
+        "**/*Activity*.*",
+        "**/*Fragment*.*",
+        '**/*Binding.*',
+        '**/*.observeStateOrEvent.*',
+        '**/hilt_aggregated_deps/**'
+]
+
+def javaDebugTree = fileTree(dir: "${buildDir}/intermediates/classes/debug", excludes: coverageExclusions)
+def javaDebugTree2 = fileTree(dir: "${buildDir}/intermediates/javac/debug", excludes: coverageExclusions)
+def kotlinDebugTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/debug", excludes: coverageExclusions)
+
+task jacocoTestReport(type: JacocoReport, dependsOn: "testDebugUnitTest") {
+    group = "Reporting"
+
+    reports {
+        xml.getRequired().set(true)
+        html.getRequired().set(true)
+        html.destination file("build/reports/jacoco/jacocoTestReport/html")
+        xml.destination file("build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml")
+    }
+
+    sourceDirectories.from = files([mainSrc])
+    classDirectories.from = files([javaDebugTree, javaDebugTree2, kotlinDebugTree])
+
+    // pattern '**/*' searches execution data in all sub-directories of build
+    def execDataPatterns = ["**/*.exec", "**/*.ec"]
+    executionData.from = files(fileTree(dir: "build", includes: execDataPatterns))
+
+    doLast {
+        println "Wrote HTML coverage report to ${reports.html.destination}/index.html"
+        println "Wrote XML coverage report to ${reports.xml.destination}"
+    }
+}

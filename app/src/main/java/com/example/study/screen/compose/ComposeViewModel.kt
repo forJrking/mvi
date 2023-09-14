@@ -16,15 +16,15 @@ class ComposeViewModel @Inject constructor(
     private val dispatcherProvider: CoroutineDispatcherProvider
 ) : BaseViewModel<ComposeAction, ComposeState, ComposeEvent>() {
 
-    init {
-        sendAction(ComposeAction.LoadData)
-    }
+//    init {
+//        sendAction(ComposeAction.LoadData)
+//    }
 
     override fun onAction(action: ComposeAction, currentState: ComposeState?) {
         when (action) {
             is ComposeAction.LoadData -> emitState {
                 emitState(ComposeState.Loading)
-                reduceRemoteData(repo.fetchWeChat())
+                reduceRemoteData(repo.fetchWeChat(action.contactId))
             }
 
             is ComposeAction.PickImages -> {
@@ -58,11 +58,7 @@ class ComposeViewModel @Inject constructor(
 
     private suspend fun reduceWipeImage(uri: Uri, state: ComposeState.Chat?): ComposeState? {
         return withContext(dispatcherProvider.io()) {
-            state?.uri?.toMutableList()?.run {
-                if (size >= MAX_COUNT) {
-                    subList(0, MAX_COUNT)
-                } else this
-            }?.let {
+            state?.uri?.toMutableList()?.let {
                 state.copy(uri = it.apply { remove(uri) })
             }
         }
@@ -71,13 +67,14 @@ class ComposeViewModel @Inject constructor(
     private suspend fun reducePickImages(uri: List<Uri>, state: ComposeState.Chat?): ComposeState? {
         return withContext(dispatcherProvider.io()) {
             if (uri.isNotEmpty() && state != null) {
-                val images = state.uri.toMutableList()
                 state.copy(
-                    uri = images.apply {
-                        if (images.size >= MAX_COUNT) {
-                            images.subList(0, MAX_COUNT).addAll(0, uri)
+                    uri = state.uri.toMutableList().let {
+                        if ((it.size + uri.size) > MAX_COUNT) {
+                            it.addAll(0, uri)
+                            it.subList(0, MAX_COUNT)
                         } else {
-                            images += uri
+                            it += uri
+                            it
                         }
                     }
                 )
@@ -85,7 +82,8 @@ class ComposeViewModel @Inject constructor(
         }
     }
 
-    private fun reduceRemoteData(content: String): ComposeState {
+    private fun reduceRemoteData(result: Result<String>): ComposeState {
+        val content = result.getOrDefault("")
         return if (content.isEmpty()) {
             ComposeState.Empty
         } else {

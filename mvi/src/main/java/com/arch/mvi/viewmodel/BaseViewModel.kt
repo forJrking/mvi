@@ -1,5 +1,6 @@
 package com.arch.mvi.viewmodel
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.arch.mvi.intent.Action
@@ -90,8 +91,10 @@ abstract class BaseViewModel<A : Action, S : State, E : Effect> : ViewModel() {
     protected suspend fun emitEffect(effect: E) = _effect.emit(effect)
 
     /** 不挂起发送 state ，返回 boolean */
-    protected fun tryEmitState(state: S) = _state.tryEmit(state)
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
+    fun tryEmitState(state: S) = _state.tryEmit(state)
 
     /**不挂起发送 effect ，返回 ChannelResult */
-    protected fun tryEmitEffect(effect: E) = _effect.tryEmit(effect)
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
+    fun tryEmitEffect(effect: E) = _effect.tryEmit(effect)
 }

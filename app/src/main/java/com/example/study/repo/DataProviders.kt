@@ -46,7 +46,7 @@ object DataProviders {
         val builder = StringBuilder()
         builder.append("Details about Item: ").append(position)
         for (i in 0 until position) {
-            builder.append("\nMore details information here.")
+            builder.append(getRandomHan(12))
         }
         return builder.toString()
     }

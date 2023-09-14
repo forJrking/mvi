@@ -8,6 +8,7 @@ import com.arch.mvi.view.BaseFragment
 import com.example.study.databinding.FragmentHostListBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import kotlin.math.min
 
 /**
  * A fragment representing a list of Items.
@@ -23,7 +24,7 @@ class HostFragment : BaseFragment<FragmentHostListBinding, HostViewModel>() {
     override val viewModel by viewModels<HostViewModel>()
 
     override fun initRenderers(binding: FragmentHostListBinding) {
-        renderer.init(binding.list, args.columnCount) {
+        renderer.init(binding.list, min(args.columnCount, 1)) {
             viewModel.sendAction(HostAction.NavCompose(it))
         }
     }
