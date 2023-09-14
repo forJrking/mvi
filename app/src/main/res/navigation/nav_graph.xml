@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/fragment_logon"
-        android:name="com.example.study.screen.logon.LogonFragment"
+        android:name="com.example.mvi.screen.logon.LogonFragment"
         android:label="logon"
         tools:layout="@layout/fragment_logon">
         <action
@@ -22,7 +22,7 @@
 
     <fragment
         android:id="@+id/fragment_host"
-        android:name="com.example.study.screen.host.HostFragment"
+        android:name="com.example.mvi.screen.host.HostFragment"
         tools:layout="@layout/fragment_host_list">
         <argument
             android:name="columnCount"
@@ -37,10 +37,10 @@
 
     <fragment
         android:id="@+id/fragment_compose"
-        android:name="com.example.study.screen.compose.ComposeFragment">
+        android:name="com.example.mvi.screen.compose.ComposeFragment">
         <argument
             android:name="data"
-            app:argType="com.example.study.repo.Contact" />
+            app:argType="com.example.mvi.repo.Contact" />
     </fragment>
 
 </navigation>

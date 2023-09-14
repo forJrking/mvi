@@ -13,10 +13,10 @@ apply from: "$rootDir/gradle/script/screenshot.gradle"
 
 android {
     compileSdkVersion 34
-    namespace 'com.example.study'
+    namespace 'com.example.mvi'
 
     defaultConfig {
-        applicationId "com.example.study"
+        applicationId "com.example.mvi"
         minSdkVersion 21
         targetSdkVersion 34
         versionCode 1
