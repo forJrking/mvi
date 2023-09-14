@@ -4,7 +4,7 @@
 
 Like MVC, MVP or MVVM, MVI is an architectural design pattern that helps us organize our code better to create robust and maintainable applications. It belongs to the same family as Flux or Redux and was first introduced by André Medeiros. The acronym is formed from the contraction of the words "Model", "View" and "UserIntent".
 
-![android_aac](image/MVI.png)
+![android_aac](art/MVI.png)
 
 **MVI** stands for **Model-View-Intent**. It is inspired by the Cycle.js front-end framework and advocates a one-way data flow design idea, which is very suitable for data-driven UI display projects:
 
@@ -12,11 +12,11 @@ Like MVC, MVP or MVVM, MVI is an architectural design pattern that helps us orga
 - **View**: Same as View in other MVX, it may be an Activity, Fragment or any UI hosting unit. View in MVI implements interface refresh by subscribing to changes in State.
 - **Intent**: This Intent is not the Intent of the Activity. Any user operations are packaged into UserIntent and sent to the Model for data request.
 
-![drawgram](image/drawgram.png)
+![drawgram](art/drawgram.png)
 
 ## Google AAC(Android Architecture Components)
 
-![android_aac](image/android_aac.png)
+![android_aac](art/android_aac.png)
 
 ## MVI pos&cons
 
@@ -36,7 +36,7 @@ https://juejin.cn/post/6969382803112722446#heading-9
 
 ## architecture diagram
 
-![MFDP DESIGN DRAW](image/app_architecture_diagram.png)
+![MFDP DESIGN DRAW](art/app_architecture_diagram.png)
 
 ## Compose support, Talk is cheap, show me the code
 ```kotlin
@@ -66,7 +66,7 @@ https://juejin.cn/post/6969382803112722446#heading-9
 ## MVI Template
 
 please copy the template to clipboard, and go on.
-![mvi template guide](image/template_guide.png)
+![mvi template guide](art/template_guide.png)
 
 ```
 
