@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/fragment_logon">
+
+    <fragment
+        android:id="@+id/fragment_logon"
+        android:name="com.example.study.screen.logon.LogonFragment"
+        android:label="logon"
+        tools:layout="@layout/fragment_logon">
+        <action
+            android:id="@+id/action_fragment_logon_to_fragment_host"
+            app:destination="@id/fragment_host"
+            app:enterAnim="@anim/slide_in_up"
+            app:exitAnim="@anim/slide_out_down"
+            app:popEnterAnim="@anim/slide_out_down"
+            app:popExitAnim="@anim/slide_in_up" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_host"
+        android:name="com.example.study.screen.host.HostFragment"
+        tools:layout="@layout/fragment_host_list">
+        <argument
+            android:name="columnCount"
+            android:defaultValue="1"
+            app:argType="integer" />
+
+        <action
+            android:id="@+id/action_fragment_host_to_fragment_compose"
+            app:destination="@id/fragment_compose" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_compose"
+        android:name="com.example.study.screen.compose.ComposeFragment">
+        <argument
+            android:name="data"
+            app:argType="com.example.study.repo.Contact" />
+    </fragment>
+
+</navigation>

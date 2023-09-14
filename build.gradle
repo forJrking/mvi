@@ -1,0 +1,48 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+import static java.lang.System.getenv
+
+buildscript {
+    
+    ext {
+        nav_version = "2.5.3"
+        kotlin_version = "1.9.0"
+        hilt_version = "2.47"
+    }
+
+    ext.getProperty = { String propertyName, String environmentVariable ->
+        return project.hasProperty(propertyName) && !project.property(propertyName).isEmpty() ?
+                project.property(propertyName) : getenv(environmentVariable)
+    }
+
+    repositories {
+//        maven {
+//            url = "https://"
+//            credentials {
+//                username getProperty("nexusUser", "NEXUS_USR")
+//                password getProperty("nexusPassword", "NEXUS_PSW")
+//            }
+//        }
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.1.1'
+        classpath "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:1.9.0-1.0.13"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
