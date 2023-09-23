@@ -10,16 +10,16 @@ import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.launch
 
 
-inline fun <T> Flow<T>.observeWithLifecycle(
+fun <T> Flow<T>.observeWithLifecycle(
     lifecycleOwner: LifecycleOwner,
     minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
-    collector: FlowCollector<T>
+    collector: FlowCollector<T>,
 ): Job = lifecycleOwner.lifecycleScope.launch {
     flowWithLifecycle(lifecycleOwner.lifecycle, minActiveState).collect(collector)
 }
 
-inline fun <T> Flow<T>.observeWithLifecycle(
+fun <T> Flow<T>.observeWithLifecycle(
     fragment: androidx.fragment.app.Fragment,
     minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
-    collector: FlowCollector<T>
+    collector: FlowCollector<T>,
 ): Job = observeWithLifecycle(fragment.viewLifecycleOwner, minActiveState, collector)

@@ -2,9 +2,9 @@ package com.example.mvi.screen.compose
 
 import android.net.Uri
 import app.cash.turbine.test
+import com.arch.mvi.testing.extension.effectCollection
+import com.arch.mvi.testing.extension.stateCollection
 import com.example.mvi.core.BaseTester
-import com.example.mvi.core.effectCollection
-import com.example.mvi.core.stateCollection
 import com.example.mvi.repo.DataRepository
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals

@@ -1,2 +1,4 @@
 include ':app'
 include ':mvi'
+include ':mvi-testing'
+include ':compose-spider'

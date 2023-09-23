@@ -1,7 +1,7 @@
 package com.example.mvi.screen.host
 
+import com.arch.mvi.testing.extension.effectCollection
 import com.example.mvi.core.BaseTester
-import com.example.mvi.core.effectCollection
 import com.example.mvi.repo.Contact
 import com.example.mvi.repo.DataRepository
 import kotlinx.coroutines.flow.first

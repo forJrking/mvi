@@ -1,7 +1,5 @@
-package com.example.mvi.core
+package com.arch.mvi.testing.extension
 
-import com.example.mvi.di.CoroutineDispatcherProvider
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestDispatcher
@@ -26,13 +24,4 @@ class CoroutineTestExtension : BeforeEachCallback, AfterEachCallback {
     companion object {
         val testDispatcher: TestDispatcher = UnconfinedTestDispatcher()
     }
-}
-
-class TestCoroutineDispatcherProvider(
-    private val testDispatcher: TestDispatcher
-) : CoroutineDispatcherProvider {
-    override fun main(): CoroutineDispatcher = testDispatcher
-    override fun default(): CoroutineDispatcher = testDispatcher
-    override fun io(): CoroutineDispatcher = testDispatcher
-    override fun unconfined(): CoroutineDispatcher = testDispatcher
 }
