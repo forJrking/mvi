@@ -2,6 +2,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -59,7 +60,9 @@ dependencies {
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
     implementation(project(mapOf("path" to ":mvi")))
-
+    // Koin for Android
+    ksp(libs.koin.ksp.compiler)
+    implementation(libs.koin.androidx.compose)
     testImplementation(libs.junit)
     testImplementation(project(mapOf("path" to ":mvi-testing")))
 

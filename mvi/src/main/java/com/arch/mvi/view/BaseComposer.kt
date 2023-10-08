@@ -16,14 +16,14 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
 @Composable
-fun <S : State, E : Effect, V : BaseViewModel<*, S, E>> StateEffectScaffold(
-    viewModel: V,
+fun <S : State, E : Effect, VM : BaseViewModel<*, S, E>> StateEffectScaffold(
+    viewModel: VM,
     initialState: S? = null,
     lifecycle: Lifecycle = LocalLifecycleOwner.current.lifecycle,
     minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
     context: CoroutineContext = EmptyCoroutineContext,
-    sideEffect: (suspend (V, E) -> Unit)? = null,
-    content: @Composable (V, S) -> Unit
+    sideEffect: (suspend (VM, E) -> Unit)? = null,
+    content: @Composable (VM, S) -> Unit
 ) {
     sideEffect?.let {
         val lambdaEffect by rememberUpdatedState(sideEffect)
