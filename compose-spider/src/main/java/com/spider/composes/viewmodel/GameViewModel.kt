@@ -26,22 +26,22 @@ class GameViewModel constructor(
     }
 
     override fun onAction(action: GameAction, currentState: GameState?) {
-        when (action) {
-            GameAction.LoadData -> {
-                /*viewModelScope.launch {
-                    withContext(dispatcherProvider.io()) {
-                        runCatching { repository.fetchRemoteOrLocalData() }
-                    }.onSuccess {
-                        emitState(reducer.reduceRemoteOrLocalData())
-                    }.onFailure {
-                        emitState(GameState.Empty)
-                    }
-                }*/
-            }
-
-            is GameAction.OnButtonClicked -> {
-                emitEffect { GameEffect.ShowToast("Clicked ${action.id}") }
-            }
-        }
+//        when (action) {
+//            GameAction.LoadData -> {
+//                /*viewModelScope.launch {
+//                    withContext(dispatcherProvider.io()) {
+//                        runCatching { repository.fetchRemoteOrLocalData() }
+//                    }.onSuccess {
+//                        emitState(reducer.reduceRemoteOrLocalData())
+//                    }.onFailure {
+//                        emitState(GameState.Empty)
+//                    }
+//                }*/
+//            }
+//
+//            is GameAction.OnButtonClicked -> {
+//                emitEffect { GameEffect.ShowToast("Clicked ${action.id}") }
+//            }
+//        }
     }
 }
